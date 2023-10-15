@@ -21,6 +21,7 @@ public class UserMapper {
 
     public UserEntity dtoToEntity(UserDTO userDTO){
         UserEntity response = new UserEntity();
+        response.setId(userDTO.getId() != null ? userDTO.getId() : null);
         response.setName(userDTO.getName());
         response.setUsername(userDTO.getUsername());
         response.setPassword(BCrypt.withDefaults()
