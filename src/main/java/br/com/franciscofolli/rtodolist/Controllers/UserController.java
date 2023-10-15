@@ -2,7 +2,6 @@ package br.com.franciscofolli.rtodolist.Controllers;
 
 import br.com.franciscofolli.rtodolist.DTOS.UserDTO;
 import br.com.franciscofolli.rtodolist.Services.IUserService;
-import br.com.franciscofolli.rtodolist.Services.Impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
