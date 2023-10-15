@@ -1,19 +1,18 @@
 package br.com.franciscofolli.rtodolist.Services.Impl;
 
 import br.com.franciscofolli.rtodolist.DTOS.TaskDTO;
-import br.com.franciscofolli.rtodolist.DTOS.UserDTO;
 import br.com.franciscofolli.rtodolist.Entities.TaskEntity;
-import br.com.franciscofolli.rtodolist.Entities.UserEntity;
 import br.com.franciscofolli.rtodolist.Mappers.TaskMapper;
 import br.com.franciscofolli.rtodolist.Repositories.ITaskRepository;
 import br.com.franciscofolli.rtodolist.Services.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -41,8 +40,8 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public List<TaskDTO> findAll() throws Exception {
-        return null;
+    public List<TaskDTO> findAll(UUID userId) throws Exception {
+        return this.mapper.entityToDto(this.repository.findAllByUserId(userId));
     }
 
     @Override
@@ -52,11 +51,16 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public void update(TaskDTO dto) throws Exception {
-
+        Optional<TaskEntity> actualTaskData = this.repository.findById(dto.getId());
+        if(actualTaskData.isEmpty()){
+            throw new Exception("Erro - Tarefa não encontrada!");
+        }
+        this.repository.save(this.mapper.dtoToEntity(dto, actualTaskData.get()));
     }
 
     @Override
     public void delete(UUID uuid) throws Exception {
 
     }
+
 }
