@@ -8,8 +8,11 @@ import br.com.franciscofolli.rtodolist.Mappers.TaskMapper;
 import br.com.franciscofolli.rtodolist.Repositories.ITaskRepository;
 import br.com.franciscofolli.rtodolist.Services.ITaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +28,14 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public TaskDTO create(TaskDTO dto) throws Exception {
+        // Date isAfter validate
+        LocalDateTime now = LocalDateTime.now();
+        if (now.isAfter(dto.getStartAt()) || now.isAfter(dto.getEndAt())) {
+            throw new Exception("Erro - Data de inicio/final é menor que a data atual!!");
+        }
+        if (dto.getStartAt().isAfter(dto.getEndAt())) {
+            throw new Exception("Erro - Data final é menor que a data incial!!");
+        }
         TaskEntity saved = this.repository.save(this.mapper.dtoToEntity(dto));
         return this.mapper.entityToDto(saved);
     }
