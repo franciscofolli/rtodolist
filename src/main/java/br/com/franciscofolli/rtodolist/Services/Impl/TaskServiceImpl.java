@@ -5,6 +5,7 @@ import br.com.franciscofolli.rtodolist.Entities.TaskEntity;
 import br.com.franciscofolli.rtodolist.Mappers.TaskMapper;
 import br.com.franciscofolli.rtodolist.Repositories.ITaskRepository;
 import br.com.franciscofolli.rtodolist.Services.ITaskService;
+import br.com.franciscofolli.rtodolist.Utils.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,9 @@ public class TaskServiceImpl implements ITaskService {
         if(actualTaskData.isEmpty()){
             throw new Exception("Erro - Tarefa não encontrada!");
         }
-        this.repository.save(this.mapper.dtoToEntity(dto, actualTaskData.get()));
+        TaskEntity updateEntity = this.mapper.dtoToEntity(dto);
+        ObjectUtil.copyNonNullProperties(updateEntity, actualTaskData.get());
+        this.repository.save(actualTaskData.get());
     }
 
     @Override

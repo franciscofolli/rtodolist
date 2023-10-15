@@ -22,7 +22,7 @@ public class FilterTaskAuth extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var servletPath = request.getServletPath();
-        if(servletPath.equals("/tasks/")){
+        if(servletPath.startsWith("/tasks/")){
             // Get username/password
             var auth = request.getHeader("Authorization");
             byte[] decoded =
